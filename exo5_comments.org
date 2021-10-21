@@ -1,0 +1,18 @@
+#+TITLE: Comments on Exercice 5 (Challenger)
+#+AUTHOR: Oussama Oulkaid
+#+OPTIONS: toc:nil
+
+* Wrong things with the document
+The first mistake that have been made in the analysis of the presented data is removing the experiments where no malfunction occured. 
+In fact, removing data is literally introducing bias into it, thus ending up with faulty conclusions.
+
+Another error was made by removing samples based on some "opinions", 
+especially when they are not reasonable.
+
+The data that was adopted is not representative, 
+and it is very hard to come up with conclusions.
+
+* Good things with the document
+The context of the data was well introduced.
+
+The overall structure of the document is good.
