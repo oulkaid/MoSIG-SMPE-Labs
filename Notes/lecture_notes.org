@@ -1,0 +1,72 @@
+#+TITLE: SMPE
+#+AUTHOR: Oussama Oulkaid
+#+OPTIONS: toc:nil
+
+* October, 21
+- Reviewing the homework about footSize=f(Mistakes)
+- Bars mainly used for catefories : A, B, C, etc.
+- The importance of multiplying pictures, visualization.
+- Inference : split the photo into two ; the original data + predctition plot (linear regression)
+- There is a test to verify ; correlation Vs. Causation.
+- What is the message behind ; choices.
+- Confidence Interval !
+- Which precision ?
+- Think about how to share data ? csv. !
+- "Regular expressions" !
+- Make things explicit as much as possible, otherwise.. bad things might happen.
+- Choose the type of variables/features in the data.
+- Alternatives to .csv : json, yaml, 
+- Pay attention to the semantics of the variables : range, missing values, etc.
+  - example : 0.0 Vs. NaN (Not a Number), NA (Not Available)
+- Pay attention to the types with respect to the used proramming language. 
+- Knowing the NA is super important, to compute the "mean", etc.
+- digital object identifier ("doi") !
+- "binder" ! : the idea of docker merged with github.
+  - also useful for inspection / letting other be capable of running my code. (Vs. Jupyter).
+
+** R
+- available data frames : mtcars
+- mtcars$mpg + 2 : many possible operations to export data in R
+- mean(mtcars[mtcars$mpg > 20 & cars$carb==4,]$wt) : example of data exportation in R
+- library(dplyr) : tools for efficiently manipulate datasets in R.
+- a bit strange ; R have acces to the name of the variable !! not ever seen in any other langauage.
+- R is more functional than Python (which more declarative/iterative)
+- troncate computation ; know when/where to save milestones in calculation.
+- Allways comment the choices that are made. when filtering, creating virtual data groups, etc.
+  - Semantics.
+
+** Rmd
+ - Documentation
+
+** Open Science
+- www.go-fair.org : an international non-profit initiative
+  - open access, open data, open code, 
+  - Reprocucibility
++ Merkle trees, Merkle DAG
++ How does git work ?
++ Finding archived public code from github on "software heritage"
++ The web time machine ?!
++ Knowledge Conservancy Magic Triangle
+# checkout : HAL archives-ouvertes
+
+** "The Turing Way"
++ Start by adding a licence
++ Start a README file
++ Identify your Contributors
++ ~Check "CDT" (Credits) : 14 contributor roles
+  - conceptualization, ressources, etc.
+  - look at the examples for the research projects 
+
+** TODO exercice with R : first name
+
+* Next week
+- ggplot
+- using git with "big data" !? (is that a thing ?!)
+* R 
+** Dependencies
+*** "tidyverse" needs
+- install.packages("zeallot")
+- sudo apt-get install libcurl4-openssl-dev
+- sudo apt install libsodium-dev
+- sudo apt-get install libssl-dev
+- sudo apt-get install libxml2-dev
