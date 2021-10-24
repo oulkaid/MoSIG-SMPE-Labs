@@ -1,6 +1,6 @@
 ---
 title: "French given names per year per department"
-author: "Edited by : **Oussama Oulkaid**. Template authors : **Lucas Mello Schnorr, Jean-Marc Vincent**"
+author: "Edited by : **Oussama Oulkaid**" # Template authors : **Lucas Mello Schnorr, Jean-Marc Vincent**"  
 date: "October, 2021"
 output:
   pdf_document: default
@@ -67,64 +67,89 @@ FirstNames
 
 <!-- The report should be a pdf knitted from a  notebook (around  3 pages including figures), the notebook and the report should be delivered. -->
 
-## Analysing first names frequencies
-Let's choose a first name (ALBERT), and analyse its frequency.
-
-The data set contains a single gender :
-```{r}
+<!-- The data set contains a two genders : -->
+```{r, message=FALSE, eval=FALSE}
 FirstNames[match(unique(FirstNames$sexe), FirstNames$sexe), c('sexe')]
 ```
+## Analysing Firstnames' frequencies
+
+We first choose an example Firstname (ALBERT), and we analyse its frequency.
 
 ```{r}
-albert <- subset(FirstNames[,c('preusuel', 'annais', 'nombre')], preusuel == 'ALBERT') %>% group_by(annais) %>% filter(annais!='XXXX')
+albert <- subset(FirstNames, preusuel == 'ALBERT') %>% filter(annais!='XXXX')
 albert <- subset(albert[,c('annais', 'nombre')])
 albert <- transform(albert, nombre = as.numeric(nombre), annais = as.numeric(annais))
-albert <- setNames( aggregate(albert$nombre, by=list(annais=albert$annais), FUN=sum) , c('annais', 'sum_nombre') )
-ggplot(data=albert, aes(x=annais, sum_nombre)) +
-  geom_point() +
-  geom_line(linetype = "dashed") +
-  geom_rug(col="steelblue",alpha=0.1, size=1.5) +
-  labs(title = "number of ALBERT names = f (year of birth)", x = "year of birth", y = "number of ALBERT names") +
-  theme(plot.title = element_text(hjust = 0.5))
-```
-**Comment** : After 1975, the number of new births with the name ALBERT was very low.
+albert <- setNames( aggregate(albert$nombre, by=list(annais=albert$annais), FUN=sum) ,
+                    c('annais', 'sum_nombre') )
 
-Now, let's compare several names' frequencies.
+ggplot(data=albert, aes(x=annais, sum_nombre)) +
+  geom_point(size=0.8) + geom_line(linetype = "dashed") +
+  geom_rug(col="steelblue",alpha=0.1, size=1.5) + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(title = "occurences of the name ALBERT = f (year of birth)", x = "year of birth", y = "occurences")
+```
+**Comment** : After 1975, the number of new births with the Firstname ALBERT became very low. But the decline started since 1921.
+
+Now, let's compare several Firstnames' frequencies.
 
 ```{r}
-all_names <- subset(FirstNames[,c('preusuel', 'annais', 'nombre')]) %>% group_by(preusuel) %>% filter(annais!='XXXX')
-sample_names <- subset( all_names[,c('preusuel', 'annais', 'nombre')], preusuel=='ALBERT' | preusuel=='CEDRIC' |preusuel=='_PRENOMS_RARES' | preusuel=='ARTHUR' )
+sample_names <- subset( FirstNames[,c('preusuel', 'annais', 'nombre')], 
+                        preusuel=='ALBERT' | preusuel=='CEDRIC' |preusuel=='_PRENOMS_RARES' | preusuel=='REBECCA' |
+                        preusuel=='ARTHUR' | preusuel=='CARMEN' | preusuel=='MARIE') %>% filter(annais!='XXXX')
 
 sample_names <- transform(sample_names, nombre = as.numeric(nombre), annais = as.numeric(annais))
-sample_names <- setNames( aggregate(sample_names$nombre, by=list(preusuel=sample_names$preusuel, annais=sample_names$annais), FUN=sum) , c('preusuel', 'annais', 'sum_nombre'))
+sample_names <- setNames( aggregate(sample_names$nombre, by=list(preusuel=sample_names$preusuel, annais=sample_names$annais), FUN=sum) , 
+                          c('preusuel', 'annais', 'sum_nombre'))
 
 ggplot(data=sample_names, aes(x=annais, sum_nombre, colour=preusuel)) +
-  geom_point( size = 1 ) + #shape = "."
-  geom_line(linetype = "dashed") +
+  geom_point(size=1) + geom_line(linetype = "dashed") +
   geom_rug(col="steelblue",alpha=0.1, size=1.5) +
-  labs(title = "number of names = f (year of birth)", x = "year of birth", y = "number of names") +
-  theme( plot.title = element_text(hjust = 0.5), legend.position = c(0.25, 0.75) )
+  labs(title = "occurences of sample names = f (year of birth)", x = "year of birth", y = "occurences") +
+  theme( plot.title = element_text(hjust = 0.5), legend.position = "top" )
 ```
 
-**Comment** : TODO
+**Comment** : It appears that the set of rare Firstnames is getting diversified, thus the increasing curve of the total number of this set.
+We note here that there are many samples for which the year of birth is not known (labeled XXXX), but we've ignored them in this analysis.
 
-Let's try to plot all the names :p
+We can also plot all the names in the data set, in order to have an exhaustive overview over the distribution (event though not readable). We'll identify the three most used Firstnames since 1900 :
 ```{r}
 all_names <- subset(FirstNames[,c('preusuel', 'annais', 'nombre')]) %>% filter(annais!='XXXX')
-sample_names <- subset( all_names[,c('preusuel', 'annais', 'nombre')], preusuel=='ALBERT' | preusuel=='CEDRIC' |preusuel=='_PRENOMS_RARES' | preusuel=='ARTHUR' )
 
 all_names <- transform(all_names, nombre = as.numeric(nombre), annais = as.numeric(annais))
 all_names <- setNames( aggregate(all_names$nombre, by=list(preusuel=all_names$preusuel, annais=all_names$annais), FUN=sum) , c('preusuel', 'annais', 'sum_nombre'))
+
+#getting the most used 3 names of all time (since 1900)
+most_names <- setNames( aggregate(all_names$sum_nombre, by=list(preusuel=all_names$preusuel), FUN=max) , c('preusuel', 'sum_nombre') )
+first_name <- subset( most_names, sum_nombre == sort(most_names$sum_nombre, decreasing = TRUE)[1] )
+second_name <- subset( most_names, sum_nombre == sort(most_names$sum_nombre, decreasing = TRUE)[2] )
+third_name <- subset( most_names, sum_nombre == sort(most_names$sum_nombre, decreasing = TRUE)[3] )
 
 ggplot(data=all_names, aes(x=annais, sum_nombre, colour=preusuel)) +
   geom_point( size = 1 ) + #shape = "."
   geom_line(linetype = "dashed") +
   geom_rug(col="steelblue",alpha=0.1, size=1.5) +
   labs(title = "number of names = f (year of birth)", x = "year of birth", y = "number of names") +
-  theme( plot.title = element_text(hjust = 0.5), legend.position = "none" )
+  theme( plot.title = element_text(hjust = 0.5), legend.position = "top" ) +
+  scale_colour_discrete(breaks = c(first_name$preusuel, second_name$preusuel, third_name$preusuel))
 ```
 
-**Comment** : TODO
+**Comment** : JEAN and MARIE are the most used Firstnames since 1900. The sum of all sets of rare names end up to form the biggest set of birth names. What we conclude from this graph is that the global set of names is getting diversified.
+
+This might lead to think about the evolution of the diversity of birth names (how many distinct names). As shown on the following graph, combined with the birth rate :
+
+```{r}
+diversity <- subset(FirstNames[,c('preusuel', 'annais')]) %>% filter(annais!='XXXX')
+diversity <- distinct(diversity, preusuel, annais)
+diversity <- setNames( count(diversity, annais), c('annais', 'n_preusuel') )
+diversity <- transform(diversity, annais = as.numeric(annais))
+
+ggplot(data=diversity, aes(x=annais, n_preusuel)) +
+  geom_point( size = 1 ) +
+  #geom_line(linetype = "dashed") +
+  #geom_rug(col="steelblue",alpha=0.1, size=1.5) +
+  labs(title = "diversity of names = f (year of birth)", x = "year of birth", y = "number of distinct names") +
+  theme( plot.title = element_text(hjust = 0.5), legend.position = "top" )
+```
+
 
 ## Now, let's compute the most given firstname per year.
 
