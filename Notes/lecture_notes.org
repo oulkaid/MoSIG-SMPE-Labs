@@ -70,3 +70,10 @@
 - sudo apt install libsodium-dev
 - sudo apt-get install libssl-dev
 - sudo apt-get install libxml2-dev
+
+*** "ggpubr" needs 
+- sudo apt-get install r-cran-rcppeigen
+  - if doesn't work, run :
+    - sudo apt-get install r-base-dev
+    - [then, try again]
+
