@@ -134,24 +134,41 @@ ggplot(data=all_names, aes(x=annais, sum_nombre, colour=preusuel)) +
 
 **Comment** : JEAN and MARIE are the most used Firstnames since 1900. The sum of all sets of rare names end up to form the biggest set of birth names. What we conclude from this graph is that the global set of names is getting diversified.
 
-This might lead to think about the evolution of the diversity of birth names (how many distinct names). As shown on the following graph, combined with the birth rate :
+This might lead to think about the evolution of the diversity of birth names (how many distinct names). As shown on the following graph :
 
 ```{r}
-diversity <- subset(FirstNames[,c('preusuel', 'annais')]) %>% filter(annais!='XXXX')
-diversity <- distinct(diversity, preusuel, annais)
-diversity <- setNames( count(diversity, annais), c('annais', 'n_preusuel') )
-diversity <- transform(diversity, annais = as.numeric(annais))
+diversity <- subset(FirstNames[,c('sexe','preusuel', 'annais')]) %>% filter(annais!='XXXX')
+diversity <- distinct(diversity, sexe, preusuel, annais)
+diversity <- setNames( count(diversity, sexe, annais), c('sexe', 'annais', 'n_preusuel') )
 
-ggplot(data=diversity, aes(x=annais, n_preusuel)) +
+diversity <- transform(diversity, annais = as.numeric(annais))
+diversity <- transform(diversity, sexe = as.character(sexe))
+
+ggplot(data=diversity, aes(x=annais, n_preusuel, colour = sexe)) +
   geom_point( size = 1 ) +
-  #geom_line(linetype = "dashed") +
-  #geom_rug(col="steelblue",alpha=0.1, size=1.5) +
+  geom_line(linetype = "dashed") +
   labs(title = "diversity of names = f (year of birth)", x = "year of birth", y = "number of distinct names") +
   theme( plot.title = element_text(hjust = 0.5), legend.position = "top" )
 ```
 
+Birth Rate :
+```{r}
+birth_rate <- subset(FirstNames[,c('sexe','annais','nombre')]) %>% filter(annais!='XXXX')
+birth_rate <- setNames( aggregate(birth_rate$nombre, by=list(sexe=birth_rate$sexe, annais=birth_rate$annais), FUN=sum) , 
+                        c('sexe', 'annais', 'sum_nombre'))
 
-## Now, let's compute the most given firstname per year.
+birth_rate <- transform(birth_rate, annais = as.numeric(annais))
+birth_rate <- transform(birth_rate, sexe = as.character(sexe))
+
+ggplot(data=birth_rate, aes(x=annais, sum_nombre, colour = sexe)) +
+  geom_point( size = 1 ) +
+  geom_line(linetype = "dashed") +
+  labs(title = "Birth Rate = f (year of birth)", x = "year of birth", y = "number of births") +
+  theme( plot.title = element_text(hjust = 0.5), legend.position = "top" )
+```
+
+
+## Compute the most given firstname per year
 
 ```{r}
 all_names <- subset(FirstNames[,c('preusuel', 'annais', 'nombre')]) %>% filter(annais!='XXXX')
@@ -171,6 +188,52 @@ ggplot(data=all_names, aes(x=annais, sum_nombre, colour=preusuel)) +
   labs(title = "most given name = f (year of birth)", x = "year of birth", y = "most given name") +
   theme( plot.title = element_text(hjust = 0.5) , legend.position = "top" )
 ```
+
+```{r}
+all_names <- subset(FirstNames[,c('sexe','preusuel', 'annais', 'nombre')]) %>% filter(annais!='XXXX')
+
+all_names <- transform(all_names, nombre = as.numeric(nombre), annais = as.numeric(annais))
+all_names <- transform(all_names, sexe = as.character(sexe))
+
+all_names <- setNames( aggregate(all_names$nombre, by=list(sexe=all_names$sexe, preusuel=all_names$preusuel, annais=all_names$annais),
+                                 FUN=sum) , c('sexe', 'preusuel', 'annais', 'sum_nombre'))
+
+#all_names <- all_names %>% group_by(annais) %>% top_n(1, sum_nombre)
+
+#1
+all_names_1 <- subset(all_names, sexe=='1')
+all_names_1 <- all_names_1 %>% group_by(annais) %>% top_n(1, sum_nombre)
+
+#2
+all_names_2 <- subset(all_names, sexe=='2')
+all_names_2 <- all_names_2 %>% group_by(annais) %>% top_n(1, sum_nombre)
+
+# extract the first occurance of preusuel
+#first_appearance <- all_names[match(unique(all_names$preusuel), all_names$preusuel),]
+
+ggplot(data=all_names_1, aes(x=annais, sum_nombre, colour=preusuel)) +
+  geom_point( size = 1 ) + #shape = "."
+  geom_line(linetype = "dashed") +
+  geom_rug(col="steelblue",alpha=0.1, size=1.5) +
+  labs(title = "most given name = f (year of birth)", x = "year of birth", y = "most given name") +
+  theme( plot.title = element_text(hjust = 0.5) , legend.position = "top" )
+
+ggplot(data=all_names_2, aes(x=annais, sum_nombre, colour=preusuel)) +
+  geom_point( size = 1 ) + #shape = "."
+  geom_line(linetype = "dashed") +
+  geom_rug(col="steelblue",alpha=0.1, size=1.5) +
+  labs(title = "most given name = f (year of birth)", x = "year of birth", y = "most given name") +
+  theme( plot.title = element_text(hjust = 0.5) , legend.position = "top" )
+
+```
+gg
+```{r}
+#library("gridExtra")
+#ggarrange(plot1, plot2 + font("x.text", size = 10),
+#                    ncol = 1, nrow = 2)
+```
+
+
 
 **Synthesis** : TODO
 
