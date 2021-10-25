@@ -1,77 +1,83 @@
-#+TITLE: SMPE
+#+TITLE: MoSIG - SMPE
 #+AUTHOR: Oussama Oulkaid
 #+OPTIONS: toc:nil
 
-* October, 21
-- Reviewing the homework about footSize=f(Mistakes)
-- Bars mainly used for catefories : A, B, C, etc.
-- The importance of multiplying pictures, visualization.
-- Inference : split the photo into two ; the original data + predctition plot (linear regression)
-- There is a test to verify ; correlation Vs. Causation.
-- What is the message behind ; choices.
-- Confidence Interval !
-- Which precision ?
-- Think about how to share data ? csv. !
-- "Regular expressions" !
-- Make things explicit as much as possible, otherwise.. bad things might happen.
-- Choose the type of variables/features in the data.
-- Alternatives to .csv : json, yaml, 
-- Pay attention to the semantics of the variables : range, missing values, etc.
-  - example : 0.0 Vs. NaN (Not a Number), NA (Not Available)
-- Pay attention to the types with respect to the used proramming language. 
-- Knowing the NA is super important, to compute the "mean", etc.
+* Lecture | October, 21
+** Homework Reveiw : footSize = f (mistakes)  
+- *Bar plots* are be mainly used for catefories. Example : A, B, C, etc.
+- *Mltiplying pictures*  visualization is inevitable. One must then select the few good ones.
+- *Inference* : split the photo into two ; the original data + prediction plot (linear regression for example).
+- *Correlation Vs. Causation* : which test to run in order to be verified ?
+- *Message* : One must think about the message behind the plot ; choices must be made.
+- *Confidence Interval* !
+- Which *precision* ?
+- Think about how to share data ! The best might be a *csv* file format. Alternatives : *json*, *yaml*.
+- Make things *explicit* as much as possible.  Otherwise, bad things might happen.
+- Choose the *type of variables* (features) in the data set.
+- Pay attention to the *semantics* of the variables : range, missing values, etc.
+  + example : 0.0 Vs. NaN (Not a Number), NA (Not Available)
+- Pay attention to the *types* with respect to the used *proramming language*. 
+- Knowing the NA is super important to *compute the mean*, etc.
+
+** R Tutorial
+- *Regular Expressions* are our friend !
+- Provides many possible operations to export data.
+- Available data frames : *mtcars*.
+- *library(dplyr)* : provide tools for efficiently manipulate datasets in R.
+- With Rstudio we can build *Rmd* Markdown documentation.
+*** Example of data exploration in  R
+#+BEGIN_src R
+mtcars$mpg + 2
+mean(mtcars[mtcars$mpg > 20 & cars$carb==4,]$wt)
+#+END_src
+*** Remarks about R
+- It is a bit strange ; R have acces to the name of the variable !! Not ever seen in any other langauage.
+- R is more functional than Python (which is more declarative/iterative)
+*** Good practices when using R
+- Troncate computation ; know when/where to save milestones in calculation.
+- Allways comment the choices that are made ; when filtering, creating virtual data groups, etc.
+- Pay attention to the semantics.
+
+** Open Science mouvement
+- https://www.go-fair.org : an international non-profit initiative
+  + Open access, open data, open code, 
+  + Reprocucibility
+-  Merkle trees, Merkle DAG
+-  How does git work ?
+-  Finding archived public code from github on "software heritage"
+-  The web time machine ?!
+-  Knowledge Conservancy Magic Triangle
+# checkout : HAL archives-ouvertes
+*** Useful notions & tools
 - digital object identifier ("doi") !
 - "binder" ! : the idea of docker merged with github.
-  - also useful for inspection / letting other be capable of running my code. (Vs. Jupyter).
-
-** R
-- available data frames : mtcars
-- mtcars$mpg + 2 : many possible operations to export data in R
-- mean(mtcars[mtcars$mpg > 20 & cars$carb==4,]$wt) : example of data exportation in R
-- library(dplyr) : tools for efficiently manipulate datasets in R.
-- a bit strange ; R have acces to the name of the variable !! not ever seen in any other langauage.
-- R is more functional than Python (which more declarative/iterative)
-- troncate computation ; know when/where to save milestones in calculation.
-- Allways comment the choices that are made. when filtering, creating virtual data groups, etc.
-  - Semantics.
-
-** Rmd
- - Documentation
-
-** Open Science
-- www.go-fair.org : an international non-profit initiative
-  - open access, open data, open code, 
-  - Reprocucibility
-+ Merkle trees, Merkle DAG
-+ How does git work ?
-+ Finding archived public code from github on "software heritage"
-+ The web time machine ?!
-+ Knowledge Conservancy Magic Triangle
-# checkout : HAL archives-ouvertes
+  + also useful for inspection / letting others be capable of running my code. (Vs. Jupyter).
+- using *git* with *big data* !?
 
 ** "The Turing Way"
-+ Start by adding a licence
-+ Start a README file
-+ Identify your Contributors
-+ ~Check "CDT" (Credits) : 14 contributor roles
-  - conceptualization, ressources, etc.
-  - look at the examples for the research projects 
+- Start by adding a licence
+- Start a README file
+- Identify your Contributors 
+# Check "CDT" (Credits) : 14 contributor roles
+- conceptualization, ressources, etc.
+# look at the examples for the research projects 
 
-** TODO exercice with R : first name
 
-* Next week
-- ggplot
-- using git with "big data" !? (is that a thing ?!)
-* R 
-** Dependencies
-*** "tidyverse" needs
+* COMMENT Lecture | October, 28
+** DONE FirstNames Exercice using R
+** TODO Challenger Exercice
+
+
+* Technical
+** R 
+*** Setup Dependencies
+***** "tidyverse"
 - install.packages("zeallot")
 - sudo apt-get install libcurl4-openssl-dev
 - sudo apt install libsodium-dev
 - sudo apt-get install libssl-dev
 - sudo apt-get install libxml2-dev
-
-*** "ggpubr" needs 
+***** "ggpubr"
 - sudo apt-get install r-cran-rcppeigen
   - if doesn't work, run :
     - sudo apt-get install r-base-dev
