@@ -1,0 +1,50 @@
+#+TITLE: Automating dataframe construction starting from copy/past from a .pdf
+#+AUTHOR: Oussama Oulkaid
+#+OPTIONS: toc:nil
+
+* Starting point
+After copying/pasting the table from the .pdf file, we attach the labels (using "_") so that the delimiter become a single space (" "). 
+We also insert a row on the top of the file ; first step to approprieatly read the .csv file.
+
+#+BEGIN_src R
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(ggplot2)
+#+END_src 
+
+* Build the Dataframe from file
+
+#+BEGIN_src R
+Data <- read_delim("DATA_copyPast.csv",delim ="\n")
+Data
+#+END_src 
+
+* Arrange the Dataframe
+
+#+BEGIN_src R
+even_indexes <- seq(1,nrow(Data),2)
+odd_indexes  <- seq(2,nrow(Data),2)
+
+feet_size <- data.frame(x=Data[even_indexes,])
+mistakes  <- data.frame(x=Data[odd_indexes,])
+
+feet_size <- strsplit(feet_size[,]," ")
+mistakes  <- strsplit(mistakes[,]," ")
+
+df1 <- data.frame(matrix(unlist(feet_size), nrow=72+1, byrow=TRUE))
+df2 <- data.frame(matrix(unlist(mistakes), nrow=72+1, byrow=TRUE))
+
+names(df1)[1] <- "feet_size"
+names(df2)[1] <- "mistakes"
+
+df1 <- subset(df1,feet_size!="feet_size")
+df2 <- subset(df2,mistakes!="number_of_mistakes")
+
+df <- cbind(df1,df2[c("mistakes")])
+
+df <- transform(df, feet_size = as.numeric(as.character(feet_size)), mistakes = as.numeric(as.character(mistakes)))
+df
+#+END_src
+
+Finally,  we got a dataframe with two columns *foot size* and *mistakes*.

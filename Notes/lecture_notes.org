@@ -62,7 +62,6 @@ mean(mtcars[mtcars$mpg > 20 & cars$carb==4,]$wt)
 - conceptualization, ressources, etc.
 # look at the examples for the research projects 
 
-
 * COMMENT Lecture | October, 28
 ** DONE FirstNames Exercice using R
 ** TODO Challenger Exercice
