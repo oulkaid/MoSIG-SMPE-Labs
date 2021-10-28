@@ -4,9 +4,9 @@ author: "Edited by : **Oussama Oulkaid**" # Template authors : **Lucas Mello Sch
 date: "October, 2021"
 geometry: margin=1.5cm
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}

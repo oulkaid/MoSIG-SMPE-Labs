@@ -62,9 +62,94 @@ mean(mtcars[mtcars$mpg > 20 & cars$carb==4,]$wt)
 - conceptualization, ressources, etc.
 # look at the examples for the research projects 
 
-* COMMENT Lecture | October, 28
-** DONE FirstNames Exercice using R
+* Lecture | October, 28
+** Data Management
+- What is a research data ?
+- Data Management Plan
+- Personal Data ?
+  + _Directly_ or _Indireclty_ identifying the person  
+- Sensitive Personal Data ?
+  + can be used to cause harm to someone
+  + processing these data is forbidden
+*** Data Management Plan
+- written document to discribe manythings..
+- Motivation : FAIR Data (previous lectures), conduct time-efficient research, etc.
+- Time efficiency : Time for making the DMP -> time spent making the research reproducible
+  + Effect : illustration : correlation between sharing data & citation rate
+- Other reason : Funding
+  + the funding organisations require a DMP
+- DMP is meant to be updated throughout the research project !
+**** Relevant aspects of data management
+- to be considered from the ...
+- Writing DMP
+  + by hand + tools that help doing that
+**** CORE aspects of the DMP
+- Data desciption and collection or re-use of existing data
+- Documentation & data quality
+- Storage and backup during the research process
+- Legal and ethical requirements, codes of conduct
+  + Responsabilities (*DPO* : Data-Protection-Officer, etc.)
+  + Data minimazation
+  + Privacy by default
+- Data sharing and long-term preservation
+  + Find a relevant repository ($)
+  + Zenodo, HAL, Software Heritage : for long term preservation
+  + Choose the right license
+- Data management responsibilities and ressources
+**** How to evaluate a DMP ?
+
+** Comments on FirstNames Exercice using R
+- To plot the departments related data, maybe it's a good idea to use a map.
+- Before working with the data, explore its content first
+- Before using the data, ask about its origin first
+- replace "xx", and "xxxx" with NA.
+- useful operations to explore the data : the begaining and the end
+#+BEGIN_SRC R
+first_elemnts <- head(FirstNames)
+last_elements <- FirstNames %>% tail(n=20)
+#+END_SRC
+
+- The problem with _PRENOMS_RARES category : we must read the documentation from producer
+- Identifying the portion of missing values, and compare it with the size of the data (to have an idea)
+- Some names are the same but with special characters (accents for example).
+  + Example : CELINE Vs. CéLINE
+- A good first step is to capitalize all names !
+- measure of dispersion (diversity) of first names
+- maybe gathering other historical events might be interesting to conclude potential causation !!
+- The idea of "the theory of bug replacement ! ^^"
+
+- Questions to answer about *DATA PRODUCTION*
+  1. Why this dataset had been produced ? (puspose) 
+  2. Which approach has been used ? (method)
+  3. How this dataset has been practically produced ? (observations)
+- Take time to analyse the production process
+- Take time to build serious metadata document
+- Take time to identify the response/explanatory variables
+
+- About the gender : today the gender is not only binary. So, maybe we can update the data !?
+- Why not add/not add the skin color !
+
+- Define a *DATA PRODUCTION PROCESS*
+
+- Criteria for the quality of data (from EuroStat)
+  + Relevance
+  + Accuracy
+  + Timeliness : the time when the experiment was done, may affect the results (example : amazon survey, in the morning vs. at night : the peoples' responses might be different depending on those)
+  + Compatibility
+  + Coherence
+  + Accessibility
+  + Interpretability
+  + Unicity
+  + Conformity to Norm
+  + Consistency
+
+- Pre-processing of Data
+  + and report the method that has been used
+
+
+* COMMENT Lecture | nextDate
 ** TODO Challenger Exercice
+** TODO the ggplot use : check the pad/github
 
 
 * Technical
