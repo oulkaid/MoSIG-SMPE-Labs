@@ -4,9 +4,9 @@ author: "Edited by : **Oussama Oulkaid**" # Template authors : **Lucas Mello Sch
 date: "October, 2021"
 geometry: margin=1.5cm
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -41,7 +41,7 @@ if(!file.exists(file)){
  download.file("https://www.insee.fr/fr/statistiques/fichier/2540004/dpt2020_csv.zip",
  destfile=file)
  }
- unzip(file)
+unzip(file)
 ```
 
 ## 2. Build the Dataframe from file
@@ -113,9 +113,9 @@ ggplot(data=sample_names, aes(x=annais, sum_nombre, colour=preusuel)) +
 **Comment** : It appears that the set of rare Firstnames is getting diversified, thus the increasing curve of the total number of this set.
 We note here that there are many samples for which the year of birth is not known (labeled XXXX), but we've ignored them in this analysis.
 
-We can also plot all the names in the data set, in order to have an exhaustive overview over the distribution (event though not readable). We'll identify the three most used Firstnames since 1900 :
+<!-- We can also plot all the names in the data set, in order to have an exhaustive overview over the distribution (event though not readable). We'll identify the three most used Firstnames since 1900 : 
 
-```{r, echo=FALSE, results=FALSE, message=FALSE}
+```{r, echo=FALSE, results=FALSE, message=FALSE, eval=FALSE}
 all_names <- subset(FirstNames[,c('preusuel', 'annais', 'nombre')]) %>% filter(annais!='XXXX')
 
 all_names <- transform(all_names, nombre = as.numeric(nombre), annais = as.numeric(annais))
@@ -135,6 +135,7 @@ ggplot(data=all_names, aes(x=annais, sum_nombre, colour=preusuel)) +
   theme( plot.title = element_text(hjust = 0.5), legend.position = "top" ) +
   scale_colour_discrete(breaks = c(first_name$preusuel, second_name$preusuel, third_name$preusuel))
 ```
+-->
 
 **Comment** : JEAN and MARIE are the most used Firstnames since 1900. The sum of all sets of rare names end up to form the biggest set of birth names. What we conclude from this graph is that the global set of names is getting diversified.
 
