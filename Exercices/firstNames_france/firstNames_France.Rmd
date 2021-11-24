@@ -244,61 +244,9 @@ ggplot(data=jean, aes(x=dpt, nombre)) +
 
 **Comment** : TODO
 
-One convinient way, is to show this on a map:
-```{r, echo=FALSE, results=FALSE, message=FALSE}
-map <- map_data("france")
-map
-jean_bis <- transform(jean, dpt = as.numeric(dpt))
-names(jean_bis)[1] <- "group"
-jean_bis
+\newpage 
 
-result_map <- left_join(x = map[,-6], y = jean_bis)
-result_map
-
-map_theme <- theme(title=element_text(),
-                   plot.title=element_text(margin=margin(20,20,20,20), size=18, hjust = 0.5),
-                   axis.text.x=element_blank(),
-                   axis.text.y=element_blank(),
-                   axis.ticks=element_blank(),
-                   axis.title.x=element_blank(),
-                   axis.title.y=element_blank(),
-                   panel.grid.major= element_blank(), 
-                   panel.background= element_blank()) 
-
-ggplot(result_map, aes(long,lat, group = group, fill = nombre)) +
-  geom_polygon() +
-  coord_map() +
-  scale_fill_gradient(name = "Number") +
-  labs(x = "", 
-       y = "", 
-       title = "Distribution of births with name JEAN in 1946", 
-#       subtitle = "",
-#       caption = ""
-  ) + map_theme
-```
-
-
-
-
-
-
-
-
-
-
-
-# DRAFT : trying another name
-```{r, echo=FALSE, results=FALSE, message=FALSE}
-jean <- FirstNames[,c('preusuel', 'annais', 'dpt', 'nombre')] %>% filter(preusuel=='JEAN', annais=='1945')
-jean <- subset(jean[,c('dpt','nombre')])
-jean <- transform(jean, nombre = as.numeric(nombre))
-
-ggplot(data=jean, aes(x=dpt, nombre)) +
-  geom_bar(stat="identity") +
-  scale_x_discrete(guide = guide_axis(n.dodge=3), ) +
-  labs(title="number of births with JEAN first name = f (department)", x="number of births with JEAN first name", y="department") +
-  theme( plot.title = element_text(hjust = 0.5),   axis.text.x = element_text(size = 6), legend.position = "non")
-```
+One convenient way, is to show this on a map:
 
 ```{r, echo=FALSE, results=FALSE, message=FALSE}
 map <- map_data("france")
@@ -331,6 +279,15 @@ ggplot(result_map, aes(long,lat, group = group, fill = nombre)) +
 #       caption = ""
   ) + map_theme
 ```
+
+**TODO:** Verify department numbers (figure out the convention that was used). This might be the reason for the non found department numbers.
+
+
+
+
+
+
+
 
 
 
