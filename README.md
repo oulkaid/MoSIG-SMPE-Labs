@@ -1,5 +1,6 @@
 # MoSIG-SMPE-Labs
-Scientific Methodology and (emPirical|exPerimental) Evaluation
+> Scientific Methodology and (emPirical|exPerimental) Evaluation
+---
 
 ## Activities (newest first)
 - [M2R-ParallelQuicksort](https://github.com/oulkaid/M2R-ParallelQuicksort)
