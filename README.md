@@ -1,7 +1,7 @@
 # MoSIG-SMPE-Labs
 Scientific Methodology and (emPirical|exPerimental) Evaluation
 
-## Activities 
+## Activities (newest first)
 - [M2R-ParallelQuicksort](https://github.com/oulkaid/M2R-ParallelQuicksort)
 - [R-manipulation](https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercices/R_manipulation)
 - [Challenger](https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercices/exo5_challenger)
