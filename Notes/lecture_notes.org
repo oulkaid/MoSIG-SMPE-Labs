@@ -62,6 +62,7 @@ mean(mtcars[mtcars$mpg > 20 & cars$carb==4,]$wt)
 - conceptualization, ressources, etc.
 # look at the examples for the research projects 
 
+
 * Lecture | October, 28
 ** Data Management
 - What is a research data ?
@@ -147,10 +148,18 @@ last_elements <- FirstNames %>% tail(n=20)
   + and report the method that has been used
 
 
-* COMMENT Lecture | nextDate
-** TODO Challenger Exercice
+* Lecture | November, 18
+** Review : Challenger Exercice
+- Confidance interval
+- False + Vs. False -
+- 
 ** TODO the ggplot use : check the pad/github
+** TODO peer-evaluated exercice in the MOOC ; provide a pointer to correction, & get change-roles 
+** TODO Choose a use case & work with it : sort algos
 
+
+* COMMENT Next time
+** Viz with ggplot
 
 * Technical
 ** R 
