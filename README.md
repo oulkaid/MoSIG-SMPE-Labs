@@ -6,7 +6,7 @@
   - [x] Insert configurable experimentation parameters in the script
   - [ ] Compare data of experiments being conducted on three different machines
   - [ ] Ensure randomization when conducting measurements
-  - [x] Add confidence interval (used ggplot2 built-in function)
+  - [ ] Add confidence interval (use ggplot2 built-in function), remove `stat_smooth()`
 - [R-manipulation](https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercices/R_manipulation)
   - [x] Copy/Past data from a pdf file, then rebuild a convenient data frame with R
 - [Challenger](https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercices/exo5_challenger)
