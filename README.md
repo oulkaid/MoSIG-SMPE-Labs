@@ -2,7 +2,7 @@
 > Scientific Methodology and (emPirical|exPerimental) Evaluation
 
 ## Activities
-- [Peer-evaluated-exercice](https://app-learninglab.inria.fr/moocrr/gitlab/0c2d387b484b42dc06d4c28dcae352b6/mooc-rr/blob/master/module3/exo3/execice_en.pdf): **Not Completed Yet**
+- [Peer-evaluated-exercice](https://app-learninglab.inria.fr/moocrr/gitlab/0c2d387b484b42dc06d4c28dcae352b6/mooc-rr/blob/master/module3/exo3/execice_en.pdf) (**Not Completed Yet**)
 - [M2R-ParallelQuicksort](https://github.com/oulkaid/M2R-ParallelQuicksort)
   - [x] Insert configurable experimentation parameters in the script
   - [ ] Compare data of experiments being conducted on three different machines
