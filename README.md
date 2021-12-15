@@ -2,7 +2,8 @@
 > Scientific Methodology and (emPirical|exPerimental) Evaluation
 
 ## Activities
-- [Peer-evaluated-exercice:Playfair](https://app-learninglab.inria.fr/moocrr/gitlab/0c2d387b484b42dc06d4c28dcae352b6/mooc-rr/blob/master/module3/exo3/exercice_en.pdf) (**Finished**)
+- [Is-Batman-somewhere?](https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercices/batman)
+- [Peer-evaluated-exercice:Playfair](https://app-learninglab.inria.fr/moocrr/gitlab/0c2d387b484b42dc06d4c28dcae352b6/mooc-rr/blob/master/module3/exo3/exercice_en.pdf)
 - [M2R-ParallelQuicksort](https://github.com/oulkaid/M2R-ParallelQuicksort)
   - [x] Insert configurable experimentation parameters in the script
   - [x] Compare data of experiments being conducted on three different machines
