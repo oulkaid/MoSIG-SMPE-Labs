@@ -66,6 +66,7 @@ anova(reg1)
 ```{r, message=FALSE}
 plot(reg1$fitted.values, reg1$residuals, xlab="Predicted", ylab="Residuals")
 ```
+
 - The graph shows that the value of residuals generally increases for higher values of predicted brain weight. At a first glance, we can assume that the outlier element (with a predicted value of brain weight around `1000`) caused a deviation in the linear regression model, because the model tries to include all the elements of the dataset.
 
 - The Cook's distance graph shows that the seventh element in the dataset has the largest distance. It corresponds to the outlier previously cited.
@@ -80,20 +81,24 @@ phytobis = phyto[which(phyto$BRW<8000),]
 reg2 = lm(BRW ~ BOW, data=phytobis)
 summary(reg2)
 ```
-- Now, we clearly notice an improvement of the relevance of the model ; the coefficient of determination is much more significant ($\hat \beta_2$) is `14.5099` (was `8.9999` for `reg1`). This goes along with a decrease of the intercept ($\hat \beta_1$).
-- This, our assumption was valid ; removing the outlier from the linear regression model is helpful. 
+- Now, we clearly notice an improvement of the relevance of the model ; the coefficient of determination is much more significant ($\hat \beta_2$). it's value is `14.5099` (was `8.9999` for `reg1`). This goes along with a decrease of the intercept ($\hat \beta_1$).
+- Thus, our assumption was valid ; removing the outlier from the linear regression model is helpful. 
 - The Cook's distance corresponding to the new model is:
 ```{r, message=FALSE}
 plot(reg2, 4) #Cook's distance
 ```
 
+<!--
 - Diagnosis of the validity of the linear model approach
 ```{r, message=FALSE}
 par(mfcol=c(2,2))
 plot(reg1)
 plot(reg2)
 ```
+
 - One advantage is that the second model allows to have a wider view of the distribution of the sample.
+
+-->
 
 ## 3 - Contribution of each part of the brain to the total weight
 <!--
@@ -102,6 +107,7 @@ phytoNum=phyto[,c(4:8)]
 mat.cor=cor(phytoNum)
 corrplot(mat.cor, type="upper")
 ```
+
 -->
 
 - Pearson tests
@@ -133,9 +139,10 @@ anova(regm)
 reg0 = lm(BRW ~ 1, data = phyto)
 step(reg0, scope=BRW~AUD + MOB + HIP, direction="forward")
 ```
-The purpose of this function is to start from a linear regression model (`reg0` is this case) and perform some analysis by adding at each time a new variable. It seems that the variables are added in an order such that the variable with the highest `p-value` is added first, and so on.
+
+- The purpose of this function is to start from a linear regression model (`reg0` in this case) and perform some analysis by adding at each time a new variable. It seems that the variables are added in a specific order such that the variable with the highest `p-value` is added first, and so on.
 - *"The AIC is designed to find the model that explains the most variation in the data, while penalizing for models that use an excessive number of parameters.. The lower the AIC, the better the model fit."* (source: https://www.statology.org/aic-in-r/)
-- If you consider this definition, we can assume that the multivariate model (`BRW~AUD + MOB + HIP`) fits better.
+- If we consider this definition, we can assume that the multivariate model (`BRW~AUD + MOB + HIP`) fits better.
 
 ## 4 - Link between volume of tthe auditory part and diet
 ```{r, message=FALSE}
@@ -143,6 +150,7 @@ myData$Diet_F = as.factor(myData$Diet)
 with(myData, plot(AUD~Diet))
 with(myData, plot(AUD~Diet_F))
 ```
+
 - I think it's preferable to look at the first plot. Especially that for some diet categories the number of samples is not representative (`2` and `4`). So looking only at the factors graph would be misleading.
 
 - Regression analysis:
@@ -152,4 +160,4 @@ summary(lm)
 anova(lm)
 ```
 
-- Conclusion : there is no correlation between the auditory brain volume and diet ; the sum of squared residuals is way more large than the sum of squares of the model. In addition, the corresponding `p-value` is high, which means that there is no clear correlation linking the auditory brain volume and diet.
+- Conclusion : there is no correlation between the auditory brain volume and diet ; the sum of squared residuals is way more large than the sum of squares of the model. In addition, the corresponding `p-value` is relatively high.
