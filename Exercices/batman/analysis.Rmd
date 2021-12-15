@@ -34,6 +34,7 @@ phyto = myData[(myData$Diet==1),]
 ggplot(myData, aes(x=BOW, y=BRW)) + geom_point(size = 0.5) +
   xlab("Body mass (g)") + ylab("Brain mass (mg)") + theme_light()
 ```
+
 - We can spot an outlier element that has both a huge body and brain mass compared to the whole distribution.
 
 - We launch the simple linear regression. The estimated model has the following form: $BRW = \hat \beta_1 + \hat \beta_2 \times BOW + \epsilon$
@@ -55,6 +56,7 @@ ggplot(myData, aes(x=BOW, y=BRW)) + geom_point(size = 0.5) +
   stat_smooth(method="lm", se=TRUE) +
   xlab("Body mass (g)") + ylab("Brain mass (mg)") + theme_light()
 ```
+
 - Analysis of the variance table:
 ```{r, message=FALSE}
 anova(reg1)
@@ -91,13 +93,13 @@ plot(reg2, 4) #Cook's distance
 <!--
 - Diagnosis of the validity of the linear model approach
 ```{r, message=FALSE}
-par(mfcol=c(2,2))
-plot(reg1)
-plot(reg2)
+#par(mfcol=c(2,2))
+#plot(reg1)
+#plot(reg2)
 ```
-
+-->
+<!--
 - One advantage is that the second model allows to have a wider view of the distribution of the sample.
-
 -->
 
 ## 3 - Contribution of each part of the brain to the total weight
