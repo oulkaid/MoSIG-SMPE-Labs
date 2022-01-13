@@ -158,8 +158,51 @@ last_elements <- FirstNames %>% tail(n=20)
 ** TODO Choose a use case & work with it : sort algos
 
 
-* COMMENT Next time
+* Lecture | November, 25
 ** Viz with ggplot
+
+* Lecture | December, 13
+** Towards a responsible science
+- HCERES: FRA institute responsible for scientific integrity (OFIS)
+*** THREE PILLARS
+1. Ethics:
+	- Is the research sound? is it moral?
+	- Done by a committee
+2. Scientific integrity:
+	- domain dependent, universal
+3. Deontology:
+	- About being "intègre"
+	- Avoide conflict of interest, when exercising a private activity for example
+** LAW evolution in France ("Citizen science")
+** Discussion
+*** Deontology
+- In hiring committes, how to ensure objectivity
+- Conflict of interest
+	- Insdustry lobby; Funding bias
+- Movie: "Picture a Scientist"
+- Examples: Medical science, Social science
+- Ethical regulations: /Loi Jardé (recherches impliquant la personne humaine)/
+- Ecological impact, not discussed here!
+- Scientific misconduct
+- Data manipulation / Photo manipulation
+- Harking, P-Hacking.
+	- Possible answers: *pre-registration*
+- PubPeer: post publication peer review
+*** Scientific Integrity (PLAIARISM)
+- Editors Requirements
+- Cite as much as possible
+- Discussion: How to make a publication known by other domains (Computer Science, Biology, etc.)
+	- Some research results are useful for other domains
+- Self-plagiarism (duplicate publication, etc.)
+
+* COMMENT Next week: Focus on Ethics, 2nd Part
+
+
+
+
+
+
+
 
 * Technical
 ** R 
