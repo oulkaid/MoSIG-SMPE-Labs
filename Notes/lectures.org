@@ -1,0 +1,216 @@
+#+TITLE: MoSIG - SMPE Notes
+#+AUTHOR: Oussama Oulkaid
+#+OPTIONS: toc:nil
+
+* Lecture | October, 21
+** Homework Reveiw : footSize = f (mistakes)  
+- *Bar plots* are be mainly used for catefories. Example : A, B, C, etc.
+- *Mltiplying pictures*  visualization is inevitable. One must then select the few good ones.
+- *Inference* : split the photo into two ; the original data + prediction plot (linear regression for example).
+- *Correlation Vs. Causation* : which test to run in order to be verified ?
+- *Message* : One must think about the message behind the plot ; choices must be made.
+- *Confidence Interval* !
+- Which *precision* ?
+- Think about how to share data ! The best might be a *csv* file format. Alternatives : *json*, *yaml*.
+- Make things *explicit* as much as possible.  Otherwise, bad things might happen.
+- Choose the *type of variables* (features) in the data set.
+- Pay attention to the *semantics* of the variables : range, missing values, etc.
+  + example : 0.0 Vs. NaN (Not a Number), NA (Not Available)
+- Pay attention to the *types* with respect to the used *proramming language*. 
+- Knowing the NA is super important to *compute the mean*, etc.
+
+** R Tutorial
+- *Regular Expressions* are our friend !
+- Provides many possible operations to export data.
+- Available data frames : *mtcars*.
+- *library(dplyr)* : provide tools for efficiently manipulate datasets in R.
+- With Rstudio we can build *Rmd* Markdown documentation.
+*** Example of data exploration in  R
+#+BEGIN_src R
+mtcars$mpg + 2
+mean(mtcars[mtcars$mpg > 20 & cars$carb==4,]$wt)
+#+END_src
+*** Remarks about R
+- It is a bit strange ; R have acces to the name of the variable !! Not ever seen in any other langauage.
+- R is more functional than Python (which is more declarative/iterative)
+*** Good practices when using R
+- Troncate computation ; know when/where to save milestones in calculation.
+- Allways comment the choices that are made ; when filtering, creating virtual data groups, etc.
+- Pay attention to the semantics.
+
+** Open Science mouvement
+- https://www.go-fair.org : an international non-profit initiative
+  + Open access, open data, open code, 
+  + Reprocucibility
+-  Merkle trees, Merkle DAG
+-  How does git work ?
+-  Finding archived public code from github on "software heritage"
+-  The web time machine ?!
+-  Knowledge Conservancy Magic Triangle
+# checkout : HAL archives-ouvertes
+*** Useful notions & tools
+- digital object identifier ("doi") !
+- "binder" ! : the idea of docker merged with github.
+  + also useful for inspection / letting others be capable of running my code. (Vs. Jupyter).
+- using *git* with *big data* !?
+
+** "The Turing Way"
+- Start by adding a licence
+- Start a README file
+- Identify your Contributors 
+# Check "CDT" (Credits) : 14 contributor roles
+- conceptualization, ressources, etc.
+# look at the examples for the research projects 
+
+* Lecture | October, 28
+** Data Management
+- What is a research data ?
+- Data Management Plan
+- Personal Data ?
+  + _Directly_ or _Indireclty_ identifying the person  
+- Sensitive Personal Data ?
+  + can be used to cause harm to someone
+  + processing these data is forbidden
+*** Data Management Plan
+- written document to discribe manythings..
+- Motivation : FAIR Data (previous lectures), conduct time-efficient research, etc.
+- Time efficiency : Time for making the DMP -> time spent making the research reproducible
+  + Effect : illustration : correlation between sharing data & citation rate
+- Other reason : Funding
+  + the funding organisations require a DMP
+- DMP is meant to be updated throughout the research project !
+**** Relevant aspects of data management
+- to be considered from the ...
+- Writing DMP
+  + by hand + tools that help doing that
+**** CORE aspects of the DMP
+- Data desciption and collection or re-use of existing data
+- Documentation & data quality
+- Storage and backup during the research process
+- Legal and ethical requirements, codes of conduct
+  + Responsabilities (*DPO* : Data-Protection-Officer, etc.)
+  + Data minimazation
+  + Privacy by default
+- Data sharing and long-term preservation
+  + Find a relevant repository ($)
+  + Zenodo, HAL, Software Heritage : for long term preservation
+  + Choose the right license
+- Data management responsibilities and ressources
+**** How to evaluate a DMP ?
+
+** Comments on FirstNames Exercice using R
+- To plot the departments related data, maybe it's a good idea to use a map.
+- Before working with the data, explore its content first
+- Before using the data, ask about its origin first
+- replace "xx", and "xxxx" with NA.
+- useful operations to explore the data : the begaining and the end
+#+BEGIN_SRC R
+first_elemnts <- head(FirstNames)
+last_elements <- FirstNames %>% tail(n=20)
+#+END_SRC
+
+- The problem with _PRENOMS_RARES category : we must read the documentation from producer
+- Identifying the portion of missing values, and compare it with the size of the data (to have an idea)
+- Some names are the same but with special characters (accents for example).
+  + Example : CELINE Vs. CéLINE
+- A good first step is to capitalize all names !
+- measure of dispersion (diversity) of first names
+- maybe gathering other historical events might be interesting to conclude potential causation !!
+- The idea of "the theory of bug replacement ! ^^"
+
+- Questions to answer about *DATA PRODUCTION*
+  1. Why this dataset had been produced ? (puspose) 
+  2. Which approach has been used ? (method)
+  3. How this dataset has been practically produced ? (observations)
+- Take time to analyse the production process
+- Take time to build serious metadata document
+- Take time to identify the response/explanatory variables
+
+- About the gender : today the gender is not only binary. So, maybe we can update the data !?
+- Why not add/not add the skin color !
+
+- Define a *DATA PRODUCTION PROCESS*
+
+- Criteria for the quality of data (from EuroStat)
+  + Relevance
+  + Accuracy
+  + Timeliness : the time when the experiment was done, may affect the results (example : amazon survey, in the morning vs. at night : the peoples' responses might be different depending on those)
+  + Compatibility
+  + Coherence
+  + Accessibility
+  + Interpretability
+  + Unicity
+  + Conformity to Norm
+  + Consistency
+
+- Pre-processing of Data
+  + and report the method that has been used
+
+* Lecture | November, 18
+** Review : Challenger Exercice
+- Confidance interval
+- False + Vs. True -
+** DONE the ggplot use : check the pad/github
+** DONE peer-evaluated exercice in the MOOC ; provide a pointer to correction, & get change-roles 
+** DONE Choose a use case & work with it : sort algos
+
+* Lecture | November, 25
+** Viz with ggplot
+
+* ETHiCS | December, 13
+** Towards a responsible science
+- HCERES: FRA institute responsible for scientific integrity (OFIS)
+*** THREE PILLARS
+1. Ethics:
+	- Is the research sound? is it moral?
+	- Done by a committee
+2. Scientific integrity:
+	- domain dependent, universal
+3. Deontology:
+	- About being "intègre"
+	- Avoide conflict of interest, when exercising a private activity for example
+** LAW evolution in France ("Citizen science")
+** Discussion
+*** Deontology
+- In hiring committes, how to ensure objectivity
+- Conflict of interest
+	- Insdustry lobby; Funding bias
+- Movie: "Picture a Scientist"
+- Examples: Medical science, Social science
+- Ethical regulations: /Loi Jardé (recherches impliquant la personne humaine)/
+- Ecological impact, not discussed here!
+- Scientific misconduct
+- Data manipulation / Photo manipulation
+- Harking, P-Hacking.
+	- Possible answers: *pre-registration*
+- PubPeer: post publication peer review
+*** Scientific Integrity (PLAIARISM)
+- Editors Requirements
+- Cite as much as possible
+- Discussion: How to make a publication known by other domains (Computer Science, Biology, etc.)
+	- Some research results are useful for other domains
+- Self-plagiarism (duplicate publication, etc.) 
+** Authorship responsibility
+- Guest autorship: buying authorship!
+- Ghostwriting: eg. persons contributing to correct the paper before publication (spelling, phrasing, etc.)
+- Order of authors may vary from a field to annother: *CRrdiT*
+- The buttle against Scientific Fraud
+- h-index
+- *SCIGen*: a tool to generate fake articles
+- /forbetterscience.com/
+- paper approval Vs. endorsement
+* Technical
+** R 
+*** Setup Dependencies
+***** "tidyverse"
+- install.packages("zeallot")
+- sudo apt-get install libcurl4-openssl-dev
+- sudo apt install libsodium-dev
+- sudo apt-get install libssl-dev
+- sudo apt-get install libxml2-dev
+***** "ggpubr"
+- sudo apt-get install r-cran-rcppeigen
+  - if doesn't work, run :
+    - sudo apt-get install r-base-dev
+    - [then, try again]
+

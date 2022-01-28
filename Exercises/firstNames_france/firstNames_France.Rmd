@@ -1,0 +1,305 @@
+---
+title: "French given names per year per department"
+author: "Edited by : **Oussama Oulkaid**" # Template authors : **Lucas Mello Schnorr, Jean-Marc Vincent**"  
+date: "October, 2021"
+geometry: margin=1.5cm
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Introduction
+The aim of the activity is to develop a methodology to answer a specific question on a given dataset. 
+
+The dataset is the set of Firstname given in France on a large period of time. 
+[given names data set of INSEE](https://www.insee.fr/fr/statistiques/fichier/2540004), we choose this dataset because it is sufficiently large, the analysis cannot be done by hand, the structure is simple.
+
+We will use the _tidyverse_ for this analysis. The file **dpt2019.csv** contains the data. 
+
+```{r, results=FALSE, message=FALSE}
+# The environment
+library(tidyverse)
+library(ggplot2)
+library(stringr)
+library(stringi)
+```
+
+
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+version
+```
+
+<!-- Read in R with this code. Note that you might need to install the `readr` package with the appropriate command. -->
+
+<!-- ## Download Raw Data from the website -->
+```{r, echo=FALSE, eval=FALSE}
+file = "dpt2020_txt.zip"
+if(!file.exists(file)){
+ download.file("https://www.insee.fr/fr/statistiques/fichier/2540004/dpt2020_csv.zip",
+ destfile=file)
+}
+unzip(file)
+```
+
+## 2. Build the Dataframe from file
+```{r, message=FALSE}
+FirstNames <- read_delim("dpt2020.csv",delim =";")
+```
+```{r}
+FirstNames
+```
+
+<!-- Translation in english of variables names:  -->
+<!-- sexe -> gender  -->
+<!-- preusuel (prénom usuel) -> Firstname -->
+<!-- annais (année de naissance) -> Birth year -->
+<!-- dpt (département) -> department (administrative area unit) -->
+<!-- nombre -> number -->
+
+<!-- All of these following questions may need a preliminary analysis of the data, feel free to present answers and justifications in your own order and structure your report as it should be for a scientific report. -->
+
+<!-- 1. Choose a firstname and analyse its frequency along time. Compare several firstnames frequency -->
+<!-- 2. Establish, by gender, the most given firstname by year.  -->
+<!-- 3. Make a short synthesis -->
+<!-- 4. Advanced (not mandatory) : is the firstname correlated with the localization (department) ? What could be a method to analyze such a correlation. -->
+
+<!-- The report should be a pdf knitted from a  notebook (around  3 pages including figures), the notebook and the report should be delivered. -->
+
+<!-- The data set contains a two genders : -->
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+FirstNames[match(unique(FirstNames$sexe), FirstNames$sexe), c('sexe')]
+```
+## 3. Analysing Firstnames' frequencies
+
+We first choose an example Firstname (ALBERT), and we analyse its frequency.
+
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+albert <- subset(FirstNames, preusuel == 'ALBERT') %>% filter(annais!='XXXX')
+albert <- subset(albert[,c('annais', 'nombre')])
+albert <- transform(albert, nombre = as.numeric(nombre), annais = as.numeric(annais))
+albert <- setNames( aggregate(albert$nombre, by=list(annais=albert$annais), FUN=sum) ,
+                    c('annais', 'sum_nombre') )
+
+ggplot(data=albert, aes(x=annais, sum_nombre)) +
+  geom_point(size=0.8) + geom_line(linetype = "dashed") +
+  geom_rug(col="steelblue",alpha=0.1, size=1.5) + theme(plot.title = element_text(hjust = 0.5)) +
+  labs(title = "occurences of the name ALBERT = f (year of birth)", x = "year of birth", y = "occurences")
+```
+**Comment** : After 1975, the number of new births with the Firstname ALBERT became very low. But the decline started since 1921.
+
+Now, let's compare several Firstnames' frequencies.
+
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+sample_names <- subset( FirstNames[,c('preusuel', 'annais', 'nombre')], 
+                        preusuel=='ALBERT' | preusuel=='CEDRIC' |preusuel=='_PRENOMS_RARES' | preusuel=='REBECCA' |
+                        preusuel=='ARTHUR' | preusuel=='CARMEN' | preusuel=='MARIE') %>% filter(annais!='XXXX')
+
+sample_names <- transform(sample_names, nombre = as.numeric(nombre), annais = as.numeric(annais))
+sample_names <- setNames( aggregate(sample_names$nombre, by=list(preusuel=sample_names$preusuel, annais=sample_names$annais), FUN=sum) , 
+                          c('preusuel', 'annais', 'sum_nombre'))
+
+ggplot(data=sample_names, aes(x=annais, sum_nombre, colour=preusuel)) +
+  geom_point(size=1) + geom_line(linetype = "dashed") +
+  geom_rug(col="steelblue",alpha=0.1, size=1.5) +
+  labs(title = "occurences of sample names = f (year of birth)", x = "year of birth", y = "occurences") +
+  theme( plot.title = element_text(hjust = 0.5), legend.position = "top" )
+```
+
+\newpage
+
+**Comment** : It appears that the set of rare Firstnames is getting diversified, thus the increasing curve of the total number of this set.
+We note here that there are many samples for which the year of birth is not known (labeled XXXX), but we've ignored them in this analysis.
+
+<!-- We can also plot all the names in the data set, in order to have an exhaustive overview over the distribution (event though not readable). We'll identify the three most used Firstnames since 1900 : 
+
+```{r, echo=FALSE, results=FALSE, message=FALSE, eval=FALSE}
+all_names <- subset(FirstNames[,c('preusuel', 'annais', 'nombre')]) %>% filter(annais!='XXXX')
+
+all_names <- transform(all_names, nombre = as.numeric(nombre), annais = as.numeric(annais))
+all_names <- setNames( aggregate(all_names$nombre, by=list(preusuel=all_names$preusuel, annais=all_names$annais), FUN=sum) , c('preusuel', 'annais', 'sum_nombre'))
+
+#getting the most used 3 names of all time (since 1900)
+most_names <- setNames( aggregate(all_names$sum_nombre, by=list(preusuel=all_names$preusuel), FUN=max) , c('preusuel', 'sum_nombre') )
+first_name <- subset( most_names, sum_nombre == sort(most_names$sum_nombre, decreasing = TRUE)[1] )
+second_name <- subset( most_names, sum_nombre == sort(most_names$sum_nombre, decreasing = TRUE)[2] )
+third_name <- subset( most_names, sum_nombre == sort(most_names$sum_nombre, decreasing = TRUE)[3] )
+
+ggplot(data=all_names, aes(x=annais, sum_nombre, colour=preusuel)) +
+  geom_point( size = 1 ) + #shape = "."
+  geom_line(linetype = "dashed") +
+  geom_rug(col="steelblue",alpha=0.1, size=1.5) +
+  labs(title = "number of names = f (year of birth)", x = "year of birth", y = "number of names") +
+  theme( plot.title = element_text(hjust = 0.5), legend.position = "top" ) +
+  scale_colour_discrete(breaks = c(first_name$preusuel, second_name$preusuel, third_name$preusuel))
+```
+-->
+
+**Comment** : JEAN and MARIE are the most used Firstnames since 1900. The sum of all sets of rare names end up to form the biggest set of birth names. What we conclude from this graph is that the global set of names is getting diversified.
+
+This might lead to think about the evolution of the diversity of birth names (how many distinct names). As shown on the following graph :
+
+\newpage
+
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+diversity <- subset(FirstNames[,c('sexe','preusuel', 'annais')]) %>% filter(annais!='XXXX')
+diversity <- distinct(diversity, sexe, preusuel, annais)
+diversity <- setNames( count(diversity, sexe, annais), c('sexe', 'annais', 'n_preusuel') )
+
+diversity <- transform(diversity, annais = as.numeric(annais))
+diversity <- transform(diversity, sexe = as.character(sexe))
+
+ggplot(data=diversity, aes(x=annais, n_preusuel, colour = sexe)) +
+  geom_point( size = 1 ) +
+  geom_line(linetype = "dashed") +
+  labs(title = "diversity of names = f (year of birth)", x = "year of birth", y = "number of distinct names") +
+  theme( plot.title = element_text(hjust = 0.5), legend.position = "top" )
+```
+
+Analyzing the Birth Rate :
+
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+birth_rate <- subset(FirstNames[,c('sexe','annais','nombre')]) %>% filter(annais!='XXXX')
+birth_rate <- setNames( aggregate(birth_rate$nombre, by=list(sexe=birth_rate$sexe, annais=birth_rate$annais), FUN=sum) , 
+                        c('sexe', 'annais', 'sum_nombre'))
+
+birth_rate <- transform(birth_rate, annais = as.numeric(annais))
+birth_rate <- transform(birth_rate, sexe = as.character(sexe))
+
+ggplot(data=birth_rate, aes(x=annais, sum_nombre, colour = sexe)) +
+  geom_point( size = 1 ) +
+  geom_line(linetype = "dashed") +
+  labs(title = "Birth Rate = f (year of birth)", x = "year of birth", y = "number of births") +
+  theme( plot.title = element_text(hjust = 0.5), legend.position = "top" )
+```
+
+**Comment** : We observe a sudden drop in the birth rate, both around 1915 and 1940. Which might be a clear manifestation of respectively the world war 1 (1914-1918) and the world war 2 (1939-1945).
+
+\newpage
+
+## 4. Compute the most given firstname per year
+
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+all_names <- subset(FirstNames[,c('sexe','preusuel', 'annais', 'nombre')]) %>% filter(annais!='XXXX')
+
+all_names <- transform(all_names, nombre = as.numeric(nombre), annais = as.numeric(annais))
+all_names <- transform(all_names, sexe = as.character(sexe))
+
+all_names <- setNames( aggregate(all_names$nombre, by=list(sexe=all_names$sexe, preusuel=all_names$preusuel, annais=all_names$annais),
+                                 FUN=sum) , c('sexe', 'preusuel', 'annais', 'sum_nombre'))
+
+#1
+all_names_1 <- subset(all_names, sexe=='1')
+all_names_1 <- all_names_1 %>% group_by(annais) %>% top_n(1, sum_nombre)
+
+#2
+all_names_2 <- subset(all_names, sexe=='2')
+all_names_2 <- all_names_2 %>% group_by(annais) %>% top_n(1, sum_nombre)
+
+# extract the first occurance of preusuel
+#first_appearance <- all_names[match(unique(all_names$preusuel), all_names$preusuel),]
+
+ggplot(data=all_names_1, aes(x=annais, sum_nombre, colour=preusuel)) +
+  geom_point( size = 0.8 ) + #shape = "."
+  geom_line(linetype = "dashed") +
+  geom_rug(col="steelblue",alpha=0.1, size=1.5) +
+  labs(title = "most given name = f (year of birth)", x = "year of birth", y = "most given name") +
+  theme( plot.title = element_text(hjust = 0.5) , legend.position = "top" ) +
+  scale_colour_discrete(name = "preusuel - sexe 1")
+```
+
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+ggplot(data=all_names_2, aes(x=annais, sum_nombre, colour=preusuel)) +
+  geom_point( size = 0.8 ) + #shape = "."
+  geom_line(linetype = "dashed") +
+  geom_rug(col="steelblue",alpha=0.1, size=1.5) +
+  labs(title = "______________________", x = "year of birth", y = "most given name") +
+  theme( plot.title = element_text(hjust = 0.5) , legend.position = "top" ) +
+  scale_colour_discrete(name = "preusuel - sexe 2")
+```
+
+
+\newpage
+
+**Synthesis** : TODO
+
+## 5. Any correlation between the first name and the localization (department) ?
+Let's take for insatance the most used name on 1946 (JEAN) ; 53584 (the peak), and see its distribution over the departments.
+
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+jean <- FirstNames[,c('preusuel', 'annais', 'dpt', 'nombre')] %>% filter(preusuel=='JEAN', annais=='1946')
+jean <- subset(jean[,c('dpt','nombre')])
+jean <- transform(jean, nombre = as.numeric(nombre))
+
+ggplot(data=jean, aes(x=dpt, nombre)) +
+  geom_bar(stat="identity") +
+  scale_x_discrete(guide = guide_axis(n.dodge=3), ) +
+  labs(title="number of births with JEAN first name = f (department)", x="number of births with JEAN first name", y="department") +
+  theme( plot.title = element_text(hjust = 0.5),   axis.text.x = element_text(size = 6), legend.position = "non")
+```
+
+**Comment** : TODO
+
+\newpage 
+
+One convenient way, is to show this on a map:
+
+```{r, echo=FALSE, results=FALSE, message=FALSE}
+map <- map_data("france")
+map
+jean_bis <- transform(jean, dpt = as.numeric(dpt))
+names(jean_bis)[1] <- "group"
+jean_bis
+
+result_map <- left_join(x = map[,-6], y = jean_bis)
+result_map
+
+map_theme <- theme(title=element_text(),
+                   plot.title=element_text(margin=margin(20,20,20,20), size=18, hjust = 0.5),
+                   axis.text.x=element_blank(),
+                   axis.text.y=element_blank(),
+                   axis.ticks=element_blank(),
+                   axis.title.x=element_blank(),
+                   axis.title.y=element_blank(),
+                   panel.grid.major= element_blank(), 
+                   panel.background= element_blank()) 
+
+ggplot(result_map, aes(long,lat, group = group, fill = nombre)) +
+  geom_polygon() +
+  coord_map() +
+  scale_fill_gradient(name = "Number") +
+  labs(x = "", 
+       y = "", 
+       title = "Distribution of births with name JEAN in 1946", 
+#       subtitle = "",
+#       caption = ""
+  ) + map_theme
+```
+
+**TODO:** Verify department numbers (figure out the convention that was used). This might be the reason for the non found department numbers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,170 @@
+---
+title: "Subject 2: Purchasing power of English workers from the 16th to the 19th century"
+author: "Oussama Oulkaid"
+date: "November 28, 2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(warn = -1) 
+```
+
+## Preamble
+The aim of this activity is to perform convenient visualization for data describing the evolution of wages and wheat price for English workers from the 16th to the 19th century.
+
+The dataset in our disposal is a csv file available at:
+
+<https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/HistData/Wheat.csv>.
+
+The following is the chart as made by William Playfair, showing at one view the price of both the quarter of wheat (=12.70058636 kg) and wages of labor by the Week, from 1565 to 1821.
+
+![Evolution of the wheat price and average salaries from 1565 to 1821 *(source: [Wikimedia](https://commons.wikimedia.org/wiki/File:Chart_Showing_at_One_View_the_Price_of_the_Quarter_of_Wheat,_and_Wages_of_Labour_by_the_Week,_from_1565_to_1821.png))*](img/playfair-chart.png)
+
+In this document, we first try to reproduce the same chart using R. Then, we propose some enhancement on the visualization aspect. And at the end, we will try to make the message behind Playfair's chart stand out better.
+
+<!-- 
+library(reshape2)
+library(Hmisc)
+-->
+<!-- describe(df) -->
+\newpage
+## Preliminary steps
+1. Importing the following R libraries:
+```{r, results=FALSE, message=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```
+
+2. Building the data frame:
+
+From the [link](https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/HistData/Wheat.csv) cited above, we have downloaded the csv file containing the data. It is located in the `data/` folder.
+
+We build the data frame as follows, and we output a couple of rows to have a look at its structure:
+```{r, message=FALSE}
+df <- read.csv("data/Wheat.csv",header=T)
+df[c(1,2),]
+```
+
+We observe that the first column indicates a sort of an identifier for each data sample. This is not an interesting parameter, so we may simply omit it:
+```{r, message=FALSE}
+# Only keep columns from 2 to 4 (column 1 is omitted):
+df <- df[c(2:4)]
+df[c(1,2),]
+```
+
+## Reproducing Playfair's graph
+<!-- **!!TODO : perform required transformations in terms of wheat-price & salary** -->
+```{r, message=FALSE}
+# Create a list of personalized colors:
+my_colors <- list( blue = "#3399e6",
+                   red  = "#ff3333",
+                   dark = "#1f1f1f")
+```
+```{r, message=FALSE}
+# Start with a usual ggplot2 call:
+ggplot(df, aes(x=Year)) + 
+  # Plot Wheat price with Histograms (scale=3/2):
+  geom_col( aes(y=Wheat/1.5), width = 4.15, alpha=1,
+            color = my_colors[["dark"]], fill = my_colors[["dark"]] ) +
+  # Plot Wages as a blue filled area with a red delimiter:
+  geom_area( aes(y=Wages), size = 1, alpha=0.7,
+             color = my_colors[["red"]], fill=my_colors[["blue"]] ) +
+  
+# Custom the Y scales:
+  scale_y_continuous( name = "Wages (in Shillings per week)",
+    sec.axis = sec_axis( trans=~.*1.5, name="Wheat Price (in Shillings per quarter)" ) 
+  ) +
+  labs(title = "Evolution of wages and wheat price for English workers (16th to 19th century)") +
+  theme_light() + 
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.title.y.left = element_text(colour = my_colors[["red"]]),
+        axis.title.y.right = element_text(colour = my_colors[["dark"]]))
+```
+
+- \underline{Note:} The last three values of Wages are missing from dataset.
+- \underline{Comment:} The Wages were increasing for the whole period of time represented in this chart, with a noticeable increase in its pace that started around 1700. Wheat price on the other hand has no consistent progress, and was even rapidly changing in some times.
+
+## Alternative representation
+First, we represent the data as simple dots for both wages and wheat price.
+
+As it is difficult to see the overall pattern for the wheat values evolution, we use the `stat_smooth()` function that shows a smoothed mean (with a confidence level of 70%).
+
+We try to make the two curves occupy the largest space as possible, all by avoiding them intersect, in order to facilitate the reading of the plot. For that purpose, my change reduce the scale of Wheat price by 2/3.
+```{r, message=FALSE}
+# Set color parameters:
+wages_color <- "#ff5733"
+wheat_color <- rgb(0.2, 0.6, 0.9, 1)
+wheat_color_trans <- rgb(0.2, 0.6, 0.9, 0.5)
+```
+```{r, message=FALSE}
+# Start with a usual ggplot2 call:
+ggplot(df, aes(x=Year)) + 
+  geom_point( aes(y=Wages), size = 0.7, color = wages_color) + 
+  geom_point( aes(y=Wheat/1.5), size = 0.7, color = wheat_color) +
+  geom_line( aes(y=Wages), size = 0.3, color = wages_color, linetype="dashed") +
+  geom_line( aes(y=Wheat/1.5), size = 0.3, color = wheat_color, linetype="dashed") +
+  stat_smooth(aes(y=Wheat/1.5), level = 0.7, size=0.6, color=wheat_color_trans) +
+  
+  
+# Custom the Y scales:
+  scale_y_continuous( name = "Wages (in Shillings per week)",
+    sec.axis = sec_axis( trans=~.*1.5, name="Wheat (in Shillings per quarter)") 
+  ) +
+  labs(title = "Evolution of wages and wheat price for English workers (16th to 19th century)") +
+  theme_light() +
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.title.y.left = element_text(colour = wages_color),
+        axis.title.y.right = element_text(colour = wheat_color))
+```
+
+## Another representation without an explicit time axis
+When simply plotting `Wages = f(Wheat)`, there is a high density of samples that are grouped around the lower values of Wages (compared to higher values), which makes it very hard to read the graph. As a solution, we propose the following representation, on which we defined two domains of wage value, each with a different x-axis scale.
+
+Moreover, the evolution of time (Year) is now represented with a nuanced blue color.
+```{r, message=FALSE}
+# Omit rows with NA values
+data <- na.omit(df)
+
+# Split data into two intervals, defined by a new variable
+data$wages_interval[data$Wages < 8]  <- "Wages in [5,8["
+data$wages_interval[data$Wages >= 8]  <- "Wages in [8,30]"
+data$wages_interval = factor(data$wages_interval, levels=c('Wages in [5,8[','Wages in [8,30]'))
+
+
+# Plot
+ggplot(data, aes(x=Wages, y=Wheat)) +
+  geom_segment( aes(x=Wages, xend=Wages, y=0, yend=Wheat, colour=Year), size=.8, alpha=1) +
+  
+  facet_grid(~wages_interval, scales='free') +
+  
+  theme_light() +
+  theme(
+    legend.position = "right",
+    legend.key.size = unit(0.35, 'cm'),
+    panel.border = element_blank(),
+  ) +
+  xlab("Wages (in Shillings per week)") +
+  ylab("Wheat Price (in Shilling per quarter)") +
+  labs(title = "Evolution of wheat price with respect to salary of English workers") 
+```
+
+## Making the message behind Playfair's chart stand out better!
+An interesting parameter to look at is the ratio representing the amount of wheat a worker can buy with his salary. 
+```{r, message=FALSE}
+ggplot(df, aes(x=Year, y=Wages/Wheat)) + 
+  geom_line( size = 0.5, alpha=0.5, linetype="dashed" ) +
+  geom_point( size = 1 ) +
+  
+  labs(title = "How many wheat quarters a worker can buy with his weekly salary ?") +
+  theme_light() + theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+
