@@ -10,12 +10,9 @@
 - [Challenger](https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercises/exo5_challenger) - Evaluating a computational document
 - [Firstnames in France](https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercises/firstNames_france) - Data quality / Data analysis
 - [Mistakes = f (foot size) !](https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercises/footSize_mistakes) - Correlation, Causality
+- [Kindergarden](https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercises/kindergarden/notebook.org) - Correlation, Causality
 
 <!--
 - [Peer Evaluated Exercice: Playfair's Chart](https://app-learninglab.inria.fr/moocrr/gitlab/0c2d387b484b42dc06d4c28dcae352b6/mooc-rr/blob/master/module3/exo3/exercice_en.pdf) - Data visualization
 -->
 
-<!--
-- [Scores-in-Sections]()
-  - [ ] TBD ?
--->

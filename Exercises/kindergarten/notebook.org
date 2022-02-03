@@ -1,0 +1,58 @@
+#+title: kindergarden: getting the (wrong) picture from the data
+#+author: Oussama Oulkaid
+#+options: toc:nil
+
+#+begin_src R :results output append :cache yes :session :eval yes
+# Environment
+library(tidyverse)
+library(g
+gplot2)
+library(readr)
+#+end_src 
+
+* Context
+An experiment was conducted in a kindergarten of the Grenoble region. 
+Some of the teachers were trained to teach with an alternative pedagogy. 
+The children of the school were divided into two groups, the first group following a classical pedagogy, 
+the second the alternative pedagogy. The children were followed up over three years (2012-2014), 
+and their scores are given below for the three successive years, when they were in the petite, 
+moyenne and grande section. The score is to be understood as a measure of competences, 
+9 being the largest value possible and 0 the smallest. The same test was given every year.
+
+* Data
+Initially, the data we were provided is contained in a pdf file ; two tables, each representing the data
+collected for a group (see [[https://github.com/oulkaid/MoSIG-SMPE-Labs/tree/main/Exercises/R_manipulation/sections_scores_pdf/exercise.pdf][pdf file]]). This is definetly not the best format to work with data. So we wanted to create
+a csv file, unless that a copy/past from the pdf file doesn't give the convenient structure. We used some 
+R script to manage to do this (see [[https://github.com/oulkaid/MoSIG-SMPE-Labs/blob/main/Exercises/R_manipulation/sections_scores_pdf/manipulation.org][Building dataframe from pdf]]).
+
+#+begin_src R :results output append :cache yes :session :eval yes
+Data <- read.csv("data/dataframe.csv", header=T)
+df <- data.frame(Data)
+#+end_src 
+
+* Making graphs
+
+#+header: :file myplot.svg :output-dir img/
+#+begin_src R :exports results :results graphics :cache yes :session :eval yes : echo true
+gr1 <- df %>% filter(group_Id==1)
+gr2 <- df %>% filter(group_Id==2)
+
+par(mfrow = c(1, 2))
+
+boxplot(gr1$score_PS, gr1$score_MS, gr1$score_GS,
+main = "",
+names = c("PS", "MS", "GS"),
+xlab = "Groupe 1", ylab = "Score",
+col = "orange", border = "brown"
+)
+
+boxplot(gr2$score_PS, gr2$score_MS, gr2$score_GS,
+main = "",
+names = c("PS", "MS", "GS"),
+xlab = "Groupe 2", ylab = "",
+col = "orange", border = "brown"
+)
+
+#+end_src 
+
+[[file:img/myplot.svg]]

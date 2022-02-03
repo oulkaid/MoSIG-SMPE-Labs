@@ -3,26 +3,22 @@
 #+OPTIONS: toc:nil
 
 * Starting point
-After copying/pasting the table from the .pdf file, we attach the labels (using "_") so that the delimiter become a single space (" "). 
+After copying/pasting the table from the .pdf file (*exercise.pdf*) to *copied/DATA_copyPast.txt*, we attach the labels (using "_") so that the delimiter become a single space (" "). 
 We also insert a row on the top of the file ; first step to approprieatly read the .csv file.
 
-#+BEGIN_src R
-knitr::opts_chunk$set(echo = TRUE)
-
+#+BEGIN_src R :results output append :cache yes :session :eval yes 
 library(tidyverse)
 library(ggplot2)
+library(readr)
 #+END_src 
 
 * Build the Dataframe from file
-
-#+BEGIN_src R
-Data <- read_delim("DATA_copyPast.csv",delim ="\n")
-Data
+#+BEGIN_src R :results output append :cache yes :session :eval yes 
+Data <- read_delim("copied/DATA_copyPast.txt",delim ="\n")
 #+END_src 
 
 * Arrange the Dataframe
-
-#+BEGIN_src R
+#+BEGIN_src R :results output :cache yes :session :eval yes
 even_indexes <- seq(1,nrow(Data),2)
 odd_indexes  <- seq(2,nrow(Data),2)
 
@@ -44,7 +40,92 @@ df2 <- subset(df2,mistakes!="number_of_mistakes")
 df <- cbind(df1,df2[c("mistakes")])
 
 df <- transform(df, feet_size = as.numeric(as.character(feet_size)), mistakes = as.numeric(as.character(mistakes)))
-df
 #+END_src
 
+** The resulting dataframe
 Finally,  we got a dataframe with two columns *foot size* and *mistakes*.
+#+begin_src R :results output append :cache yes :session :eval yes :message false :echo true
+df
+#+end_src
+
+#+begin_example
+   feet_size mistakes
+2       17.5       15
+3       17.5       18
+4       17.5       19
+5       17.5       20
+6       18.0       16
+7       18.0       17
+8       18.0       18
+9       18.0       19
+10      18.5       14
+11      18.5       16
+12      18.5       17
+13      19.0       15
+14      19.0       16
+15      20.0       13
+16      20.0       14
+17      20.0       15
+18      20.5       12
+19      20.5       13
+20      20.5       14
+21      20.5       15
+22      21.0       10
+23      21.0       11
+24      21.0       13
+25      21.0       15
+26      21.5       10
+27      21.5       12
+28      21.5       13
+29      22.0        8
+30      22.0       10
+31      22.0       11
+32      22.0       12
+33      23.0        8
+34      23.0        9
+35      23.0       10
+36      23.5        7
+37      23.5        8
+38      23.5        9
+39      23.5       11
+40      24.0        6
+41      24.0        8
+42      24.0        9
+43      24.5        6
+44      24.5        7
+45      24.5        8
+46      24.5       10
+47      25.0        4
+48      25.0        6
+49      25.0        7
+50      25.0        8
+51      25.5        5
+52      25.5        6
+53      26.0        4
+54      26.0        5
+55      26.0        7
+56      26.5        3
+57      26.5        4
+58      26.5        5
+59      27.0        2
+60      27.0        3
+61      27.0        4
+62      27.0        7
+63      27.5        2
+64      27.5        3
+65      28.0        0
+66      28.0        1
+67      28.0        2
+68      28.0        4
+69      28.5        0
+70      28.5        2
+71      29.0        0
+72      29.0        1
+73      29.0        2
+#+end_example
+
+** Output to csv file
+#+begin_src R :results output append :cache yes :session :eval yes :message false
+write_delim(df, file="dataframe.csv", delim=",")
+#+end_src
+
