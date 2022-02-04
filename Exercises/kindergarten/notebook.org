@@ -32,7 +32,7 @@ df <- data.frame(Data)
 * Making graphs
 
 #+header: :file myplot.svg :output-dir img/
-#+begin_src R :results output append :cache yes :session :eval yes
+#+begin_src R :exports both :results output graphics :cache yes :session :eval yes
 gr1 <- df %>% filter(group_Id==1)
 gr2 <- df %>% filter(group_Id==2)
 
@@ -54,6 +54,3 @@ col = "orange", border = "brown"
 #+end_src
 
 [[file:img/myplot.svg]]
-
-
-
