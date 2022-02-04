@@ -1,12 +1,11 @@
-#+title: kindergarden: getting the (wrong) picture from the data
+#+title: kindergarten: getting the (wrong) picture from the data
 #+author: Oussama Oulkaid
 #+options: toc:nil
 
 #+begin_src R :results output append :cache yes :session :eval yes
 # Environment
 library(tidyverse)
-library(g
-gplot2)
+library(ggplot2)
 library(readr)
 #+end_src 
 
@@ -33,7 +32,7 @@ df <- data.frame(Data)
 * Making graphs
 
 #+header: :file myplot.svg :output-dir img/
-#+begin_src R :exports results :results graphics :cache yes :session :eval yes : echo true
+#+begin_src R :results output append :cache yes :session :eval yes
 gr1 <- df %>% filter(group_Id==1)
 gr2 <- df %>% filter(group_Id==2)
 
@@ -52,7 +51,9 @@ names = c("PS", "MS", "GS"),
 xlab = "Groupe 2", ylab = "",
 col = "orange", border = "brown"
 )
-
-#+end_src 
+#+end_src
 
 [[file:img/myplot.svg]]
+
+
+
